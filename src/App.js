@@ -1,5 +1,7 @@
 import "./App.css";
 
+import Form from "./components/Form";
+import { MdLightbulbOutline } from "react-icons/md";
 function App() {
   return (
     <div className="App">
@@ -11,6 +13,11 @@ function App() {
         ></img>
         <h2 className="header-title">Keep</h2>
       </header>
+      <Form />
+      <div className="placeholder">
+        <MdLightbulbOutline className="placeholder-icon" />
+        <p className="placeholder-text">Notes you add appear here</p>
+      </div>
     </div>
   );
 }
