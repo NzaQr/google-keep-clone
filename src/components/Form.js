@@ -1,42 +1,82 @@
 import React, { useState } from "react";
 import "./Form.css";
+import Note from "./Note";
+import Placeholder from "./Placeholder";
 
-const Form = () => {
+function Form() {
   const [showComponent, setShowComponent] = useState(false);
+  const [title, setTitle] = useState("");
+  const [text, setText] = useState("");
+  const [placeholder, setPlaceholder] = useState(true);
+  const [notes, setNotes] = useState([]);
+
   const handleClick = () => setShowComponent(true);
   const handleClose = () => setShowComponent(false);
 
-  return (
-    <div className="form-container">
-      <form
-        style={{
-          boxShadow: showComponent ? "0 3px 5px rgba(0, 0, 0, 0.2)" : "",
-        }}
-      >
-        {showComponent ? (
-          <input
-            className="note-title"
-            placeholder="Title"
-            autoComplete="false"
-          />
-        ) : null}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!title && !text) return;
+    addNote(title, text);
+    setTitle("");
+    setText("");
+    setShowComponent(false);
+    console.log(title);
+    console.log(text);
+  };
 
-        <input
-          className="note-text"
-          placeholder="Take a note..."
-          onClick={handleClick}
-        />
-        {showComponent ? (
-          <div className="form-buttons">
-            <button className="submit-button">Submit</button>
-            <button className="close-button" onClick={handleClose}>
-              Close
-            </button>
-          </div>
-        ) : null}
-      </form>
-    </div>
+  const addNote = (title, text) => {
+    const newNotes = [...notes, { title, text }];
+    setNotes(newNotes);
+    setPlaceholder(false);
+  };
+
+  return (
+    <>
+      <div className="form-container">
+        <form
+          style={{
+            boxShadow: showComponent ? "0 3px 5px rgba(0, 0, 0, 0.2)" : "",
+          }}
+          onSubmit={handleSubmit}
+        >
+          {showComponent ? (
+            <input
+              className="form-title"
+              placeholder="Title"
+              autoComplete="false"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          ) : null}
+
+          <input
+            className="form-text"
+            placeholder="Take a note..."
+            onClick={handleClick}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+          {showComponent ? (
+            <div className="form-buttons">
+              <button className="submit-button" type="submit">
+                Submit
+              </button>
+              <button className="close-button" onClick={handleClose}>
+                Close
+              </button>
+            </div>
+          ) : null}
+        </form>
+      </div>
+      <div className="notes">
+        {notes.map((note) => (
+          <Note key={note} note={note} />
+        ))}
+      </div>
+
+      {placeholder ? <Placeholder /> : null}
+    </>
   );
-};
+}
 
 export default Form;

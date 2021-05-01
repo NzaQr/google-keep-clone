@@ -12,7 +12,6 @@
 
 form {
   position: relative;
-  border: none;
   margin: 1px;
   border-radius: 8px;
   transition-duration: 0.218s;
@@ -20,8 +19,8 @@ form {
   transition-timing-function: ease-in;
 }
 
-.note-title,
-.note-text {
+.form-title,
+.form-text {
   width: calc(100% - 10px);
   min-height: 43px;
   margin: 0 5px;
@@ -32,12 +31,12 @@ form {
   border: 0;
 }
 
-.note-title:focus,
-.note-text:focus {
+.form-title:focus,
+.form-text:focus {
   outline: none;
 }
 
-.note-text {
+.form-text {
   letter-spacing: 0.00625em;
   overflow: hidden;
   position: relative;
