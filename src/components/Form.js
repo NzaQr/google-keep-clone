@@ -30,6 +30,12 @@ function Form() {
     setPlaceholder(false);
   };
 
+  const removeNotes = (index) => {
+    const newNotes = [...notes];
+    newNotes.splice(index, 1);
+    setNotes(newNotes);
+  };
+
   return (
     <>
       <div className="form-container">
@@ -69,8 +75,13 @@ function Form() {
         </form>
       </div>
       <div className="notes">
-        {notes.map((note) => (
-          <Note key={note} note={note} />
+        {notes.map((note, index) => (
+          <Note
+            key={index}
+            index={index}
+            note={note}
+            removeNotes={removeNotes}
+          />
         ))}
       </div>
 
