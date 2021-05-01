@@ -75,7 +75,7 @@ function Form() {
         </form>
       </div>
       <div className="notes">
-        {notes.map((note, index) => (
+        {[...notes].reverse().map((note, index) => (
           <Note
             key={index}
             index={index}
