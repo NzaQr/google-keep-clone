@@ -40,6 +40,7 @@ function Form() {
     const newNotes = [...notes, { title, text }];
     setNotes(newNotes);
     setPlaceholder(false);
+    window.location.reload();
   };
 
   const removeNotes = (index) => {
