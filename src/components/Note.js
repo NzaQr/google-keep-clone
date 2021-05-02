@@ -27,6 +27,7 @@ export default function Note({ note, index, removeNotes }) {
           value={note.text}
           onClick={openModal}
         ></input>
+        <MdDelete className="note-delete" onClick={() => removeNotes(index)} />
       </div>
 
       <Modal
@@ -37,8 +38,6 @@ export default function Note({ note, index, removeNotes }) {
         <input className="modal-title" value={note.title}></input>
         <input className="modal-text" value={note.text}></input>
         <MdClose className="close-modal" onClick={closeModal} />
-
-        <MdDelete className="note-delete" onClick={() => removeNotes(index)} />
       </Modal>
     </>
   );
