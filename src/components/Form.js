@@ -48,12 +48,6 @@ function Form() {
     setNotes(newNotes);
   };
 
-  /*   const editNotes = (index) => {
-    const newNotes = [...notes];
-    newNotes.slice(index);
-    setNotes(newNotes);
-  }; */
-
   return (
     <>
       <div className="form-container">
