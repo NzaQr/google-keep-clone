@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Form.css";
 import Note from "./Note";
 import Placeholder from "./Placeholder";
@@ -13,9 +13,21 @@ function Form() {
   const handleClick = () => setShowComponent(true);
   const handleClose = () => setShowComponent(false);
 
+  useEffect(() => {
+    const json = localStorage.getItem("notes");
+    const loadedNotes = JSON.parse(json);
+    if (loadedNotes) {
+      setNotes(loadedNotes);
+    }
+  }, []);
+
+  useEffect(() => {
+    const json = JSON.stringify(notes);
+    localStorage.setItem("notes", json);
+  }, [notes]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title && !text) return;
     addNote(title, text);
     setTitle("");
     setText("");
@@ -35,6 +47,12 @@ function Form() {
     newNotes.splice(index, 1);
     setNotes(newNotes);
   };
+
+  /*   const editNotes = (index) => {
+    const newNotes = [...notes];
+    newNotes.slice(index);
+    setNotes(newNotes);
+  }; */
 
   return (
     <>
