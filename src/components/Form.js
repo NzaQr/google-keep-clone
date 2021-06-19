@@ -162,12 +162,30 @@ function Form() {
                 onClick={() => handleEditClick(note.id, note)}
                 className="note-container"
               >
-                <input className="note-title" value={note.title}></input>
-                <textarea className="note-text" value={note.text}></textarea>
-                <MdDelete
-                  className="note-delete"
-                  onClick={() => removeNotes(note.id)}
-                />
+                {note.title === "" ? (
+                  <>
+                    <textarea
+                      className="note-text"
+                      value={note.text}
+                    ></textarea>
+                    <MdDelete
+                      className="note-delete"
+                      onClick={() => removeNotes(note.id)}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <input className="note-title" value={note.title}></input>
+                    <textarea
+                      className="note-text"
+                      value={note.text}
+                    ></textarea>
+                    <MdDelete
+                      className="note-delete"
+                      onClick={() => removeNotes(note.id)}
+                    />
+                  </>
+                )}
               </div>
             )}
           </>
