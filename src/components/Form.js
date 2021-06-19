@@ -1,14 +1,58 @@
 import React, { useState, useEffect } from "react";
 import "./Form.css";
-import Note from "./Note";
 import Placeholder from "./Placeholder";
+import { MdDelete } from "react-icons/md";
+import Modal from "react-modal";
+import "./Note.css";
 
 function Form() {
   const [showComponent, setShowComponent] = useState(false);
+  const [notes, setNotes] = useState([]);
+  const [currentNote, setCurrentNote] = useState([]);
+
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  const [placeholder, setPlaceholder] = useState(true);
-  const [notes, setNotes] = useState([]);
+
+  const [modal, setModal] = useState(false);
+  const [noteEditing, setNoteEditing] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newNote = {
+      id: new Date().getTime(),
+      title: title,
+      text: text,
+      completed: false,
+    };
+    setNotes([...notes, newNote]);
+    setTitle("");
+    setText("");
+    setShowComponent(false);
+  };
+
+  function handleEditClick(id, note) {
+    setModal(true);
+    setNoteEditing(id);
+    setCurrentNote({ ...note });
+  }
+
+  const handleEditChange = (e) => {
+    const value = e.target.value;
+    setCurrentNote({
+      ...currentNote,
+      [e.target.name]: value,
+    });
+  };
+
+  const submitEdits = (id, updatedNote) => {
+    const updatedItem = notes.map((note) => {
+      return note.id === id ? updatedNote : note;
+    });
+    setModal(false);
+    setNotes(updatedItem);
+    setNoteEditing(null);
+  };
 
   const handleClick = () => setShowComponent(true);
   const handleClose = () => setShowComponent(false);
@@ -26,27 +70,9 @@ function Form() {
     localStorage.setItem("notes", json);
   }, [notes]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addNote(title, text);
-    setTitle("");
-    setText("");
-    setShowComponent(false);
-    console.log(title);
-    console.log(text);
-  };
-
-  const addNote = (title, text) => {
-    const newNotes = [...notes, { title, text }];
-    setNotes(newNotes);
-    setPlaceholder(false);
-    window.location.reload();
-  };
-
-  const removeNotes = (index) => {
-    const newNotes = [...notes];
-    newNotes.splice(index, 1);
-    setNotes(newNotes);
+  const removeNotes = (id) => {
+    const updatedNotes = [...notes].filter((note) => note.id !== id);
+    setNotes(updatedNotes);
   };
 
   return (
@@ -68,7 +94,7 @@ function Form() {
             />
           ) : null}
 
-          <input
+          <textarea
             className="form-text"
             placeholder="Take a note..."
             onClick={handleClick}
@@ -88,17 +114,67 @@ function Form() {
         </form>
       </div>
       <div className="notes">
-        {[...notes].reverse().map((note, index) => (
-          <Note
-            key={index}
-            index={index}
-            note={note}
-            removeNotes={removeNotes}
-          />
+        {notes.map((note) => (
+          <>
+            {noteEditing === note.id ? (
+              <Modal
+                isOpen={modal}
+                onRequestClose={() => submitEdits(currentNote.id, currentNote)}
+                className="modal"
+              >
+                <form>
+                  <input
+                    className="modal-title"
+                    name="title"
+                    value={currentNote.title}
+                    onChange={handleEditChange}
+                  />
+                  <textarea
+                    className="modal-title"
+                    name="text"
+                    value={currentNote.text}
+                    onChange={handleEditChange}
+                  />
+                </form>
+                <div className="modal-buttons">
+                  <button
+                    className="modal-done"
+                    onClick={() => submitEdits(currentNote.id, currentNote)}
+                  >
+                    Done
+                  </button>
+                  <div>
+                    <button
+                      className="modal-close"
+                      onClick={() => setNoteEditing(false)}
+                    >
+                      Closes
+                    </button>
+                    <MdDelete
+                      className="note-delete"
+                      onClick={() => removeNotes(note.id)}
+                    />
+                  </div>
+                </div>
+              </Modal>
+            ) : (
+              <div
+                onClick={() => handleEditClick(note.id, note)}
+                className="note-container"
+              >
+                <input className="note-title" value={note.title}></input>
+                <textarea className="note-text" value={note.text}></textarea>
+                <MdDelete
+                  className="note-delete"
+                  onClick={() => removeNotes(note.id)}
+                />
+              </div>
+            )}
+          </>
         ))}
       </div>
 
-      {placeholder ? <Placeholder /> : null}
+      {notes.length > 0 ? null : <Placeholder />}
     </>
   );
 }
