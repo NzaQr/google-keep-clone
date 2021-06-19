@@ -38,8 +38,10 @@ form {
 
 .form-text {
   letter-spacing: 0.00625em;
+  padding-bottom: 0;
   overflow: hidden;
   position: relative;
+  height: 30px;
 }
 
 .form-buttons {
@@ -48,7 +50,7 @@ form {
 
 .submit-button,
 .close-button {
-  margin: 0.2em 0;
+  margin: 0.2em 0.5em 0.2em 0;
   box-sizing: border-box;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -72,4 +74,9 @@ form {
 .close-button {
   color: rgba(0, 0, 0, 0.87);
   background-color: rgb(251, 251, 251);
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  background-color: rgba(95, 99, 104, 0.157);
 }

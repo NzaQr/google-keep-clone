@@ -26,3 +26,11 @@ header {
   padding-top: 4px;
   padding-left: 4px;
 }
+
+textarea {
+  resize: none;
+}
+
+textarea:hover {
+  resize: vertical;
+}
