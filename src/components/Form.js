@@ -148,7 +148,7 @@ function Form() {
                       className="modal-close"
                       onClick={() => setNoteEditing(false)}
                     >
-                      Closes
+                      Close
                     </button>
                     <MdDelete
                       className="note-delete"
